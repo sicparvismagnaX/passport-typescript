@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 mongoose.connect(
-    "mongodb://testuser:test@localhost:27017/test?retryWrites=true&w=majority",
+    "mongodb://mongoadmin:secret@sssm_mongo:27017/test?authSource=admin",
     {},
     function (err) {
       if (err) throw err;
