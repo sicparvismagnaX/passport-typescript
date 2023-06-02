@@ -17,6 +17,10 @@ jobs:
           node-version: '16'
     - name: run ls
       run: ls
+    - name: install package
+      run: npm install
+    - name: build
+      run: npm run build
     - name: run echo context temp test
       env: 
         GITHUB_CONTEXT: ${{ toJSON(github) }}
