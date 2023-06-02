@@ -12,5 +12,6 @@ jobs:
       - name: run ls
         run: ls
       - name: run echo context
-        env: GITHUB_CONTEXT: ${{ toJSON(github) }}
+        env: 
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
