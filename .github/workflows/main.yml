@@ -11,6 +11,8 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
     - name: run ls
       run: ls
     - name: run echo context temp test
