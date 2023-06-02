@@ -14,7 +14,7 @@ on:
       - main
 
 jobs:
-  push-sssm-app-server-image:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
     - name: run ls
@@ -23,10 +23,11 @@ jobs:
       env: 
         GITHUB_CONTEXT: ${{ toJSON(github) }}
       run: echo "$GITHUB_CONTEXT"
+  
   push-sssm-app-server-image:
     if: github.ref_type == 'tag' && contains(github.ref_name, 'v')
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v3
     - name: run ls
