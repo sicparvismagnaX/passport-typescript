@@ -1,0 +1,12 @@
+name: CICD
+
+on:
+  create:
+    tags:
+      - v* 
+
+jobs:
+  push-sssm-app-server-image:
+      runs-on: ubuntu-latest
+      steps:
+      - run: ls
