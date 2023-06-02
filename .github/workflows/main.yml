@@ -11,7 +11,7 @@ jobs:
       steps:
       - name: run ls
         run: ls
-      - name: run echo context
+      - name: run echo context temp test
         env: 
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
