@@ -1,9 +1,6 @@
 name: CICD
 
 on:
-  create:
-    tags:
-      - v* 
   push:
     tags:
       - v* 
