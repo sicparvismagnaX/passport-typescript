@@ -75,6 +75,7 @@ app.post("/login", async (req, res) => {
       });
     }
   }
+  return res.sendStatus(200)
 });
 app.get(
   "/user",
