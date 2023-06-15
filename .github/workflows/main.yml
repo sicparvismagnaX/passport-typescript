@@ -8,9 +8,8 @@ on:
       - '*'
 
 jobs:
-  build-and-test:
+  setup-packages:
     runs-on: ubuntu-latest
-    steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
@@ -19,34 +18,66 @@ jobs:
       with:
         path: |
             **/node_modules
-        key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}-${{ steps.node.outputs.version }}
-    - name: run ls
-      run: ls
+        key: node_modules-${{github.sha}}
     - name: install package
       run: npm install
-    - name: build
-      run: npm run build
-    - name: run echo context temp test
-      env: 
-        GITHUB_CONTEXT: ${{ toJSON(github) }}
-      run: echo ${{ runner.os }}-node_modules-${{ steps.commit.outputs.short }}
-    - name: run echo2 context temp test
-      env: 
-        GITHUB_CONTEXT: ${{ toJSON(github) }}
-      run: echo ${{ runner.os }}-node_modules-${{github.sha}}
-  
-  retrieve-cache:
+
+  build:
     runs-on: ubuntu-latest
-    needs: build-and-test
+    needs: setup-packages
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+          node-version: '16'
+   - uses: actions/cache@v3
+      id: cache-npm
+      with:
+        path: |
+            **/node_modules
+        key: node_modules-${{github.sha}}
+    - if: ${{ steps.cache-npm.ouputs.cache-hit != 'true'}}
+      name: handle module download when cache miss
+      continue-on-error: false
+      run: npm install
+    - name: build
+      run: echo build something
+  
+  test:
+    runs-on: ubuntu-latest
+    needs: setup-packages
     steps:
     - uses: actions/checkout@v3
     - uses: actions/cache@v3
+      id: cache-npm
       with:
         path: |
             **/node_modules
         key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}-${{ steps.node.outputs.version }}
+    - if: ${{ steps.cache-npm.ouputs.cache-hit != 'true'}}
+      name: handle module download when cache miss
+      continue-on-error: false
+      run: npm install
     - name: run ls
       run: ls
+  
+  temp-push-img:
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      id: cache-npm
+      with:
+        path: |
+            **/node_modules
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}-${{ steps.node.outputs.version }}
+    - if: ${{ steps.cache-npm.ouputs.cache-hit != 'true'}}
+      name: handle module download when cache miss
+      continue-on-error: false
+      run: npm install
+    - name: run ls
+      run: echo image is pushed
   
   push-sssm-app-server-image:
     if: github.ref_type == 'tag' && contains(github.ref_name, 'v')
