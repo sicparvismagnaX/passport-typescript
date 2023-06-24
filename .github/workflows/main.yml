@@ -61,7 +61,7 @@ jobs:
     - name: run ls
       env:
         RUNNER_CONTEXT: steps.cache-npm.ouputs.cache-hit
-      run: echo $RUNNER_CONTEXT
+      run: echo "$RUNNER_CONTEXT"
   
   temp-push-img:
     runs-on: ubuntu-latest
