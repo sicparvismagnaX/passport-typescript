@@ -55,9 +55,8 @@ jobs:
         path: |
             **/node_modules
         key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}-${{ steps.node.outputs.version }}
-    - if: steps.cache-npm.ouputs.cache-hit != 'true'
-      name: handle module download when cache miss
-      continue-on-error: false
+    - name: handle module download when cache miss
+      if: steps.cache-npm.outputs.cache-hit != 'true'
       run: npm install
     - name: run ls
       run: ${{ steps.cache-npm.ouputs.cache-hit }}
