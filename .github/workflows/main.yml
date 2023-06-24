@@ -56,10 +56,10 @@ jobs:
             **/node_modules
         key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}-${{ steps.node.outputs.version }}
     - name: handle module download when cache miss
-      if: steps.cache-npm.outputs.cache-hit != 'true'
+      if: ${{ steps.cache-npm.ouputs.cache-hit != 'true'}}
       run: npm install
     - name: run ls
-      run: ${{ steps.cache-npm.ouputs.cache-hit }}
+      run: echo ${{ steps.cache-npm.ouputs.cache-hit }}
   
   temp-push-img:
     runs-on: ubuntu-latest
