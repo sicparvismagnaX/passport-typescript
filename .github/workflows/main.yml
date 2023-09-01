@@ -24,7 +24,7 @@ env:
   ECS_AUDIT_CRON_TASK_DEFINITION: .github/workflows/ecs/audit-cron-definition.json
   CONTAINER_NAME: sssm-backend-server-app
   DEV_IMAGE_TAG: latest  #${{ github.sha }}
-  IMAGE_TAG: ${{ github.sha }}
+  IMAGE_TAG: ${{ github.ref_name }}
 
 jobs:
   setup-packages:
@@ -43,11 +43,11 @@ jobs:
     - name: install package
       if: github.event.inputs.environment == 'develop'
       run: npm install
-    - name: install package 2
-      if: github.ref_type == 'tag' && contains(github.ref_name, 'v')
-      run: echo ${{github.ref_name}}
+    # - name: install package 2
+    #   if: github.ref_type == 'tag' && contains(github.ref_name, 'v')
+    #   run: echo ${{IMAGE_TAG}}
     - run: echo ${GITHUB_REF#refs/*/}
-    - run: echo ${{github.ref_name}}
+    - run: echo ${{env.IMAGE_TAG}}
   temp:
     runs-on: ubuntu-latest
     if: |
