@@ -40,7 +40,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: get changes
-      run: echo GITDIFF=$(git diff --name-only -r HEAD^1 HEAD) >> GITHUB_OUTPUT
+      run: echo "GITDIFF=$(git diff --name-only -r HEAD^1 HEAD)"" >> GITHUB_OUTPUT
     - run: echo $GITDIFF
   build:
     runs-on: ubuntu-latest
