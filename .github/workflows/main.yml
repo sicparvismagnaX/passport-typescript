@@ -81,6 +81,7 @@ jobs:
     if: github.ref_type == 'tag' && contains(github.ref_name, 'v')
     environment:
       name: ecsprod
+    steps:
     - uses: actions/checkout@v3
     - run: echo using the step
 
