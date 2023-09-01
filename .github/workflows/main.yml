@@ -12,6 +12,20 @@ on:
     branches:
       - '*'
 
+env:
+  AWS_REGION: ap-southeast-1                   # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: sssm-backend-server-app           # set this to your Amazon ECR repository name
+  ECS_CLUSTER: sssm-backend-server-app-cluster                 # set this to your Amazon ECS cluster name
+  ECS_BACKEND_SERVICE: sssm-backend-server-app-service                # set this to your Amazon ECS service name
+  ECS_AUDIT_CRON_SERVICE: audit-cron-service
+  ECS_NOTI_CRON_SERVICE: noti-cron-service
+  ECS_BACKEND_APP_TASK_DEFINITION: .github/workflows/ecs/sssm-app-task-definition.json
+  ECS_NOTI_CRON_TASK_DEFINITION: .github/workflows/ecs/line-notification-cron-definition.json
+  ECS_AUDIT_CRON_TASK_DEFINITION: .github/workflows/ecs/audit-cron-definition.json
+  CONTAINER_NAME: sssm-backend-server-app
+  DEV_IMAGE_TAG: latest  #${{ github.sha }}
+  IMAGE_TAG: ${{ github.sha }}
+
 jobs:
   setup-packages:
     runs-on: ubuntu-latest
@@ -46,6 +60,7 @@ jobs:
     - name: get changes
       run: echo "GITDIFF=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})" >> $GITHUB_ENV
     - run: echo $GITDIFF
+    - run: echo ${{ env.IMAGE_TAG }}
   # tomp:
   #   runs-on: ubuntu-latest
   #   steps:
