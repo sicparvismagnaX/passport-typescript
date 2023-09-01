@@ -31,7 +31,8 @@ jobs:
       run: npm install
     - name: install package 2
       if: github.ref_type == 'tag' && contains(github.ref_name, 'v')
-      run: echo scjlkds
+      run: echo ${{github.ref_name}}
+    - run: echo ${GITHUB_REF#refs/*/}
   temp:
     runs-on: ubuntu-latest
     if: |
