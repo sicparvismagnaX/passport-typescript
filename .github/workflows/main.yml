@@ -25,6 +25,7 @@ jobs:
         path: |
             **/node_modules
         key: node_modules-${{github.sha}}
+    - run: echo ${{github.event.action}}
     - name: install package
       if: github.event.inputs.environment == 'develop'
       run: npm install
@@ -91,7 +92,7 @@ jobs:
       run: echo image is pushed
   
   push-sssm-app-server-image:
-    if: github.ref_type == 'tag' && contains(github.ref_name, 'v')
+    if: (github.ref_type == 'tag' && contains(github.ref_name, 'v'))
     runs-on: ubuntu-latest
     
     steps:
