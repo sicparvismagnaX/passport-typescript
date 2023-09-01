@@ -1,6 +1,11 @@
 name: CICD
 
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment to deploy to'
+        required: false
   push:
     tags:
       - v* 
@@ -21,7 +26,11 @@ jobs:
             **/node_modules
         key: node_modules-${{github.sha}}
     - name: install package
+      if: github.event.inputs.environment == 'develop'
       run: npm install
+    - name: install package 2
+      if: github.ref_type == 'tag' && contains(github.ref_name, 'v')
+      run: echo scjlkds
 
   build:
     runs-on: ubuntu-latest
@@ -37,7 +46,7 @@ jobs:
         path: |
             **/node_modules
         key: node_modules-${{github.sha}}
-    - if: ${{ steps.cache-npm.ouputs.cache-hit != 'true'}}
+    - if: ${{ steps.cache-npm.outputs.cache-hit != 'true'}}
       name: handle module download when cache miss
       continue-on-error: false
       run: npm install
