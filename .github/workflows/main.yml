@@ -33,6 +33,7 @@ jobs:
       if: github.ref_type == 'tag' && contains(github.ref_name, 'v')
       run: echo ${{github.ref_name}}
     - run: echo ${GITHUB_REF#refs/*/}
+    - run: echo ${{github.ref_name}}
   temp:
     runs-on: ubuntu-latest
     if: |
